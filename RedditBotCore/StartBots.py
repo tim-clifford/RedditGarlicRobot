@@ -22,7 +22,6 @@ sub = reddit.subreddit("all")
 def start_stream():
     comments = sub.stream.comments()
     for comment in comments:
-        print(comment.body)
         if garlicbot.validate_comment(comment):
             queue = pickle.load(open(garlicbot.file, 'rb'))
             if queue:

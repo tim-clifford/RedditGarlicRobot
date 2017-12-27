@@ -1,5 +1,6 @@
 # Created by Rudy Pikulik 04/17
-# Last Updated 12/17
+# Forked by Tim Clifford 12/17
+# Last updated 12/17
 import praw
 import pickle
 import time
@@ -77,9 +78,7 @@ def _register_comment(comment, result):
 
 
 def get_receiver(comment):
-    #print(comment1.fullname)
     text = comment.body.lower().split()
-    #text = ''
     try:
         # Kind of gross looking code below. Splits the comment exactly once at '!Redditgarlic',
         # then figures out if the very next character is a new line. If it is, respond to parent.
@@ -135,7 +134,6 @@ def _make_message(comment):
     message += "/u/" + get_receiver(comment) + " has received garlic " + str(garlic_count)
     message += " time%s. (given by /u/" % s
     message += comment.author.name + ") "
-   # message += "__[info](http://reddit.com/r/RedditgarlicRobot)__" + comment.subreddit.display_name
     return message
 
 if __name__ == '__main__':
@@ -168,6 +166,4 @@ if __name__ == '__main__':
         if queue and len(queue) > 0:
             comment_id = queue.dequeue()
             pickle.dump(queue, open(file, 'wb'))
-            print(comment_id)
-            comment = praw.models.Comment(rsr, comment_id)
-            reply(comment)
+            reply(praw.models.Comment(rsr, comment_id))
