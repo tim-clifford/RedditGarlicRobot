@@ -10,23 +10,19 @@ from datetime import datetime
 print("Starting up the bots!")
 
 with open('id.txt','r') as f:
-    rsr = praw.Reddit(client_id=f.readline()[:-1],
+    reddit = praw.Reddit(client_id=f.readline()[:-1],
                       client_secret=f.readline()[:-1],
                       user_agent='garlicbot v0.1',
                       username='garlicbot',
                       password=f.readline()[:-1])
 
-
 # This defines the domain from which to collect comments. "all" for all comments.
 sub = reddit.subreddit("all")
-
-
-
-
 
 def start_stream():
     comments = sub.stream.comments()
     for comment in comments:
+        print(comment.body)
         if garlicbot.validate_comment(comment):
             queue = pickle.load(open(garlicbot.file, 'rb'))
             if queue:

@@ -9,9 +9,8 @@ with open('id.txt','r') as f:
     rsr = praw.Reddit(client_id=f.readline()[:-1],
                       client_secret=f.readline()[:-1],
                       user_agent='garlicbot v0.1',
-                      username=f.readline()[:-1],
+                      username='garlicbot',
                       password=f.readline()[:-1])
-
 file = 'RSRQueue.p'
 command = '!redditgarlic'
 banned_subs = ["slayone"]
@@ -60,6 +59,7 @@ def reply(comment):
         print("> %s - Posted: %s -> " % (timestr, comment.author.name) + get_receiver(comment))
         _register_comment(comment, "Posted!")
     except Exception as comment_exception:
+        print(comment_exception)
         print("> %s - Unable to post comment: %s -> " % (timestr, comment.author.name) + get_receiver(comment))
         _register_comment(comment, "Unable to post. Reason: %s" % comment_exception)
 
@@ -77,12 +77,13 @@ def _register_comment(comment, result):
 
 
 def get_receiver(comment):
+    #print(comment1.fullname)
     text = comment.body.lower().split()
+    #text = ''
     try:
-        # Kind of gross looking code below. Splits the comment exactly once at '!RedditSilver',
+        # Kind of gross looking code below. Splits the comment exactly once at '!Redditgarlic',
         # then figures out if the very next character is a new line. If it is, respond to parent.
         # If it is not a new line, either respond to the designated person or the parent.
-
         split = comment.body.lower().split(command, 1)[1].replace(' ', '')
         if split[0] is "\n":
             try:
@@ -97,7 +98,7 @@ def get_receiver(comment):
             receiver = comment.parent().author.name
         except AttributeError:
             receiver = '[deleted]'
-    # A ValueError is thrown if '!RedditSilver' is not found. Example: !RedditSilverTest would throw this.
+    # A ValueError is thrown if '!Redditgarlic' is not found. Example: !RedditgarlicTest would throw this.
     except ValueError:
         return None
     if '/u/' in receiver:
@@ -110,8 +111,7 @@ def get_receiver(comment):
         receiver = rsr.redditor(receiver).name
     return receiver
 
-
-def _silver_counter(comment):
+def _garlic_counter(comment):
     data_entries = pickle.load(open('RSRData.p', 'rb'))
     count = 0
     if data_entries:
@@ -125,17 +125,17 @@ def _silver_counter(comment):
 
 
 def _make_message(comment):
-    silver_count = _silver_counter(comment)
-    if silver_count == 1:
+    garlic_count = _garlic_counter(comment)
+    if garlic_count == 1:
         s = ""
     else:
         s = "s"
     message = "[**Here's your Reddit Garlic, " + get_receiver(comment)
     message += "!**](http://i.imgur.com/dYGNvmR.jpg \"Reddit Garlic\") \n\n"
-    message += "/u/" + get_receiver(comment) + " has received silver " + str(silver_count)
+    message += "/u/" + get_receiver(comment) + " has received garlic " + str(garlic_count)
     message += " time%s. (given by /u/" % s
     message += comment.author.name + ") "
-   # message += "__[info](http://reddit.com/r/RedditSilverRobot)__" + comment.subreddit.display_name
+   # message += "__[info](http://reddit.com/r/RedditgarlicRobot)__" + comment.subreddit.display_name
     return message
 
 if __name__ == '__main__':
@@ -168,4 +168,6 @@ if __name__ == '__main__':
         if queue and len(queue) > 0:
             comment_id = queue.dequeue()
             pickle.dump(queue, open(file, 'wb'))
-            reply(praw.models.Comment(rsr, comment_id))
+            print(comment_id)
+            comment = praw.models.Comment(rsr, comment_id)
+            reply(comment)
