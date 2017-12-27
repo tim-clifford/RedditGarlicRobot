@@ -1,6 +1,6 @@
 import pickle
 import time
-import RedditSilverRobot
+import garlicbot
 
 comments = pickle.load(open('comments.p', 'rb'))
 
@@ -11,7 +11,7 @@ except FileNotFoundError:
 
 for comment in comments:
     try:
-        tup = (comment.id, (comment.author.name, RedditSilverRobot.get_receiver(comment), time.localtime(), "Legacy"))
+        tup = (comment.id, (comment.author.name, garlicbot.get_receiver(comment), time.localtime(), "Legacy"))
         data.append(tup)
     except Exception as e:
         # This exception is intentionally weak because I'm not too worried about losing one or two entries.
