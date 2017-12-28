@@ -134,6 +134,7 @@ def _make_message(comment):
     message += "/u/" + get_receiver(comment) + " has received garlic " + str(garlic_count)
     message += " time%s. (given by /u/" % s
     message += comment.author.name + ") "
+    message += "\n\n\n^I'm ^^a ^^^bot ^^^^for ^^^^questions ^^^^^contact ^^^^^/u/flying_wotsit"
     return message
 
 if __name__ == '__main__':
