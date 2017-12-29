@@ -53,17 +53,19 @@ def validate_comment(comment):
 
 def reply(comment):
     # Makes a message and replies to the given comment.
+    timestr = str(time.localtime()[3]) + ":" + str(time.localtime()[4])
     try:
         message = _make_message(comment)
-        timestr = str(time.localtime()[3]) + ":" + str(time.localtime()[4])
         comment.reply(message)
         print("> %s - Posted: %s -> " % (timestr, comment.author.name) + get_receiver(comment))
         _register_comment(comment, "Posted!")
     except Exception as comment_exception:
-        print(comment_exception)
-        print("> %s - Unable to post comment: %s -> " % (timestr, comment.author.name) + get_receiver(comment))
-        _register_comment(comment, "Unable to post. Reason: %s" % comment_exception)
-
+        try:
+            print(comment_exception)
+            print("> %s - Unable to post comment: %s -> " % (timestr, comment.author.name) + get_receiver(comment))
+            _register_comment(comment, "Unable to post. Reason: %s" % comment_exception)
+        except Exception:
+            print("> %s - Unable to post comment for unknown reason" % (timestr))
 
 def _register_comment(comment, result):
     # Stores data in a list of tuples
