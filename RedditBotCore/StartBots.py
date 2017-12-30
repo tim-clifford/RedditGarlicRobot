@@ -20,8 +20,10 @@ with open('id.txt','r') as f:
 sub = reddit.subreddit("all")
 
 def start_stream():
-    comments = sub.stream.comments()
+    comments = sub.stream.comments(pause_after=-1)
     for comment in comments:
+        if comment == None:
+            continue
         if garlicbot.validate_comment(comment):
             queue = pickle.load(open(garlicbot.file, 'rb'))
             if queue:
