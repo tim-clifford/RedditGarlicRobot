@@ -4,7 +4,15 @@
 import praw
 import pickle
 import time
+from random import choice
 from Structures.Queue import Queue
+
+GARLIC = [
+    'https://i.imgur.com/dYGNvmR.jpg',
+    'https://i.imgur.com/etMqixE.jpg',
+    'https://i.imgur.com/NHbZOT6.jpg',
+    'https://i.redd.it/0cy3nmwrucwz.jpg'
+]
 
 with open('id.txt','r') as f:
     rsr = praw.Reddit(client_id=f.readline()[:-1],
@@ -132,7 +140,7 @@ def _make_message(comment):
     else:
         s = "s"
     message = "[**Here's your Reddit Garlic, " + get_receiver(comment)
-    message += "!**](http://i.imgur.com/dYGNvmR.jpg \"Reddit Garlic\") \n\n"
+    message += "!**](" + choice(GARLIC) + " \"Reddit Garlic\") \n\n"
     message += "/u/" + get_receiver(comment) + " has received garlic " + str(garlic_count)
     message += " time%s. (given by /u/" % s
     message += comment.author.name + ") "
