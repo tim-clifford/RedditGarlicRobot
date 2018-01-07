@@ -11,7 +11,8 @@ GARLIC = [
     'https://i.imgur.com/dYGNvmR.jpg',
     'https://i.imgur.com/etMqixE.jpg',
     'https://i.imgur.com/NHbZOT6.jpg',
-    'https://i.redd.it/0cy3nmwrucwz.jpg'
+    'https://i.redd.it/0cy3nmwrucwz.jpg',
+    'https://i.imgur.com/B7tVoVt.jpg'
 ]
 
 with open('id.txt','r') as f:
