@@ -15,6 +15,17 @@ GARLIC = [
     'https://i.imgur.com/B7tVoVt.jpg'
 ]
 
+'''
+All banned users in the form username, reason, score
+'''
+banned_users = {
+    (
+        "superficialpickle444",
+        "Grand Garlic Fraud, 1st Degree bamboozlement, and karma-whoring",
+        -1
+    ) 
+}
+
 with open('id.txt','r') as f:
     rsr = praw.Reddit(client_id=f.readline()[:-1],
                       client_secret=f.readline()[:-1],
@@ -135,6 +146,13 @@ def _garlic_counter(comment):
 
 
 def _make_message(comment):
+    for user in banned_users:
+        if get_receiver(comment) == user[0]:
+            message = get_receiver(comment) + " has been banned from recieving Reddit Garlic"
+            message += " because of " + user[1] + ".\n\n"
+            message += get_receiver(comment) "has received garlic {0} times.".format(user[2])
+            message += "\n\n\n^I'm ^^a ^^^bot ^^^^for ^^^^questions ^^^^^contact ^^^^^/u/flying_wotsit"
+            return message
     garlic_count = _garlic_counter(comment)
     if garlic_count == 1:
         s = ""
