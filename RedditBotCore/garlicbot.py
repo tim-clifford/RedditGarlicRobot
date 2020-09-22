@@ -134,12 +134,16 @@ def get_receiver(comment):
 
 def _garlic_counter(comment):
     data_entries = pickle.load(open('RSRData.p', 'rb'))
+    extra_data = pickle.load(open('ExtraData.p', 'rb'))
     count = 0
     if data_entries:
         receiver = get_receiver(comment)
         for entry in [x[1][1] for x in data_entries]:
             if entry == receiver:
                 count += 1
+        for entry in extra_data[1]:
+            if entry[0] == receiver:
+                count += entry[1]
         return count+1
     else:
         return 1
@@ -150,7 +154,7 @@ def _make_message(comment):
         if get_receiver(comment) == user[0]:
             message = get_receiver(comment) + " has been banned from recieving Reddit Garlic"
             message += " because of " + user[1] + ".\n\n"
-            message += get_receiver(comment) "has received garlic {0} times.".format(user[2])
+            message += get_receiver(comment) + " has received garlic {0} times.".format(user[2])
             message += "\n\n\n^I'm ^^a ^^^bot ^^^^for ^^^^questions ^^^^^contact ^^^^^/u/flying_wotsit"
             return message
     garlic_count = _garlic_counter(comment)
@@ -163,7 +167,7 @@ def _make_message(comment):
     message += "/u/" + get_receiver(comment) + " has received garlic " + str(garlic_count)
     message += " time%s. (given by /u/" % s
     message += comment.author.name + ") "
-    message += "\n\n\n^I'm ^^a ^^^bot ^^^^for ^^^^questions ^^^^^contact ^^^^^/u/flying_wotsit"
+    message += "\n\n\n^I'm ^^a ^^^bot, ^^^^for ^^^^questions ^^^^^contact ^^^^^^/u/flying_wotsit"
     return message
 
 if __name__ == '__main__':
